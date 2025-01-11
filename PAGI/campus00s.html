@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAMPUS 00S </title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* General */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        /* Pantalla de carga */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #000000, #383836);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 80px;
+            height: 80px;
+            border: 6px solid #fff;
+            border-top: 6px solid #252424;
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Contenido */
+        header {
+            background: linear-gradient(90deg, #1b1b1a, #858585);
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .product-container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-gallery {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            overflow: hidden;
+        }
+
+        .product-gallery img {
+            max-width: 300px;
+            border-radius: 12px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .product-gallery img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-info {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .product-info h2 {
+            font-size: 1.8rem;
+            color: #333;
+        }
+
+        .product-info p {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .price {
+            font-size: 2rem;
+            color: #626262;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        .size-selector {
+            margin-top: 1.5rem;
+        }
+
+        .size-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .size-buttons button {
+            width: 70px;
+            height: 50px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            color: #333;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .size-buttons button:hover {
+            background: #9d9d9d;
+            color: white;
+            border-color: #0c0c0c;
+        }
+
+        .size-buttons button.selected {
+            background: #040300;
+            color: #fff;
+            border-color: #1e1d1d;
+        }
+
+        .btn-primary {
+            background: #3f3f3e;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #4b4847;
+        }
+
+        footer {
+            background: linear-gradient(90deg, #676665, #0f0e0e);
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 2rem;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Modal */
+        #purchaseModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        #purchaseModal .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #purchaseModal .modal-content h3 {
+            font-size: 1.8rem;
+            color: #333;
+        }
+
+        #purchaseModal .modal-content button {
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Pantalla de carga -->
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <header>
+        <h1>Campus 00s</h1>
+    </header>
+
+    <main>
+        <div class="product-container">
+            <div class="product-gallery">
+                <img src="https://antonioperu.com/cdn/shop/files/s-l1200_13.webp?v=1719530388&width=1445" alt="Vista frontal">
+                <img src="https://360.com.py/media/catalog/product/cache/b6bd1712c9daa58f3207dbec7cf8b172/adidas/footwear/HQ8708-2.jpg" alt="Vista lateral">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSllYbuQeGq7NDSH_4UL3ZkcieVDbFu8l2FR7sdSm1JqbYG5-jIcy3S4LF21uMvUXCPFA4&usqp=CAU" alt="Vista inferior">
+            </div>
+
+            <div class="product-info">
+                <h2>Detalles del Producto</h2>
+                <p>Descubre el diseño innovador y la calidad premium de Bad Bunny Response CL.</p>
+                <h3 class="price">S/ 429.90</h3>
+                <div class="size-selector">
+                    <label>Selecciona tu talla:</label>
+                    <div class="size-buttons">
+                        <button class="size-btn">7</button>
+                        <button class="size-btn">8</button>
+                        <button class="size-btn">9</button>
+                        <button class="size-btn">10</button>
+                        <button class="size-btn">11</button>
+                    </div>
+                </div>
+                <button id="buyNow" class="btn btn-primary mt-3">Comprar Ahora</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Tienda de Zapatillas. Todos los derechos reservados.</p>
+    </footer>
+
+    <div id="purchaseModal">
+        <div class="modal-content">
+            <h3>¡Gracias por tu compra!</h3>
+            <p>Tu pedido ha sido procesado exitosamente.</p>
+            <button class="btn btn-primary" id="closeModal">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        // Mostrar contenido después de la carga
+        window.addEventListener('load', function() {
+            const loader = document.getElementById('loader');
+            loader.style.opacity = '0';
+            loader.style.transition = 'opacity 1s';
+            setTimeout(() => loader.style.display = 'none', 1000);
+
+            document.querySelectorAll('header, main, footer').forEach(element => {
+                element.classList.add('loaded');
+            });
+        });
+
+        // Selección de tallas
+        document.querySelectorAll('.size-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Método de compra
+        const buyButton = document.getElementById('buyNow');
+        const modal = document.getElementById('purchaseModal');
+        const closeModal = document.getElementById('closeModal');
+
+        buyButton.addEventListener('click', function() {
+            const selectedSize = document.querySelector('.size-btn.selected');
+            if (!selectedSize) {
+                alert('Por favor, selecciona tu talla antes de comprar.');
+                return;
+            }
+            modal.style.display = 'flex';
+        });
+
+        closeModal.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
